@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 class App extends Component {
   state = {
     contacts: [],
+    filter: '',
     name: '',
     number: '',
   };
@@ -17,19 +18,30 @@ class App extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    console.log(e.target);
-    console.log(this.state);
-    // const newArrey = [...this.state];
-
-    // this.setState((this.state.contacts = newArrey));
-
-    // console.log(this.state.contacts);
+    const { name, number } = this.state;
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    this.setState(prevState => ({
+      contacts: [newContact, ...prevState.contacts],
+      name: '',
+      number: '',
+    }));
   };
+
+  deleteContact = idBtn => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== idBtn),
+    }));
+  };
+
   render() {
     return (
       <>
         <h1>Phonebook</h1>
-        <form id={this.inputId} onSubmit={this.submitForm}>
+        <form onSubmit={this.submitForm}>
           <label>
             Name
             <input
@@ -57,13 +69,33 @@ class App extends Component {
           <button type="submit">Add contact</button>
         </form>
         <section>
+          <h2>Contacts</h2>
+          <label>
+            Find contacts by name
+            <input
+              type="text"
+              name="filter"
+              onChange={this.handleChange}
+              value={this.state.filter}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            />
+          </label>
           <ul>
-            {console.log(this.state.contacts)}
-            {this.state.contacts.map(({ id, name, number }) => (
-              <li key={id}>
-                {name}:{number}
-              </li>
-            ))}
+            {this.state.contacts
+              .filter(contact =>
+                contact.name
+                  .toLowerCase()
+                  .includes(this.state.filter.toLowerCase())
+              )
+              .map(({ id, name, number }) => (
+                <li key={id}>
+                  {name}:{number}
+                  <button type="button" onClick={() => this.deleteContact(id)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
           </ul>
         </section>
       </>
