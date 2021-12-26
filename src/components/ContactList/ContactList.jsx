@@ -1,20 +1,19 @@
-export default function ContactList() {
+import Contact from "../Contact/Contact"
+
+export default function ContactList({ contacts, filter, deleteContact }) {
     return (
         <>
             <section>
             <ul>
-            {this.state.contacts
+            {contacts
               .filter(contact =>
                 contact.name
                   .toLowerCase()
-                  .includes(this.state.filter.toLowerCase())
+                  .includes(filter.toLowerCase())
               )
               .map(({ id, name, number }) => (
                 <li key={id}>
-                  {name}:{number}
-                  <button type="button" onClick={() => this.deleteContact(id)}>
-                    Delete
-                  </button>
+                      <Contact id={ id} name={ name} number={ number} deleteContact={deleteContact} />
                 </li>
               ))}
           </ul>
