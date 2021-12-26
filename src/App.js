@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import toast, { Toaster } from 'react-hot-toast';
+import ContactList from './components/ContactList/ContactList';
+import ContactForm from './components/ContactForm/ContactForm';
+import Filter from './components/Filter/filter';
 
 class App extends Component {
   state = {
@@ -53,7 +56,8 @@ class App extends Component {
       <>
         <Toaster/>
         <h1>Phonebook</h1>
-        <form onSubmit={this.submitForm}>
+        <ContactForm/>
+        {/* <form onSubmit={this.submitForm}>
           <label>
             Name
             <input
@@ -79,10 +83,13 @@ class App extends Component {
             />
           </label>
           <button type="submit">Add contact</button>
-        </form>
-        <section>
+        </form> */}
+        
           <h2>Contacts</h2>
-          <label>
+          <Filter />
+          <ContactList/>
+
+          {/* <label>
             Find contacts by name
             <input
               type="text"
@@ -109,7 +116,7 @@ class App extends Component {
                 </li>
               ))}
           </ul>
-        </section>
+        */}
       </>
     );
   }
