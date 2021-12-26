@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import toast, { Toaster } from 'react-hot-toast';
 
 class App extends Component {
   state = {
@@ -18,7 +19,15 @@ class App extends Component {
 
   submitForm = e => {
     e.preventDefault();
-    const { name, number } = this.state;
+    const { name, number, contacts } = this.state;
+    if (contacts.some(contact => contact.name === name)) {
+      toast.error('contact with such name already exists')      
+        this.setState(prevState => ({
+        name: '',
+      number: '',
+    }))
+      return
+    }
     const newContact = {
       id: nanoid(),
       name,
@@ -29,17 +38,20 @@ class App extends Component {
       name: '',
       number: '',
     }));
+    toast.success('contact added')
   };
 
   deleteContact = idBtn => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== idBtn),
     }));
+    toast.success("delete is complete")
   };
 
   render() {
     return (
       <>
+        <Toaster/>
         <h1>Phonebook</h1>
         <form onSubmit={this.submitForm}>
           <label>
