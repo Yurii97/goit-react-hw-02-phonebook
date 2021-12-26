@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { FormStyled } from './ContactForm.styled';
 
-
-export default class ContactForm extends Component{
-    state = {
+export default class ContactForm extends Component {
+  state = {
     name: '',
     number: '',
-    }
+  };
 
-handleChange = e => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-  submitForm = (e) => {
+  submitForm = e => {
     e.preventDefault();
-    const { name, number } = this.state;    
+    const { name, number } = this.state;
     const newContact = {
       id: nanoid(),
       name,
@@ -23,17 +23,17 @@ handleChange = e => {
     };
     // console.log(this.props);
     this.props.addNewContact(newContact);
-    
+
     this.setState({
-      name: "",
-      number: "",
+      name: '',
+      number: '',
     });
   };
 
-    render() {
-        return (
-            <>
-        <form onSubmit={this.submitForm}>
+  render() {
+    return (
+      <>
+        <FormStyled onSubmit={this.submitForm}>
           <label>
             Name
             <input
@@ -59,9 +59,8 @@ handleChange = e => {
             />
           </label>
           <button type="submit">Add contact</button>
-        </form>
-        </>
-        )    
-    }
+        </FormStyled>
+      </>
+    );
+  }
 }
-
